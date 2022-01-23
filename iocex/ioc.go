@@ -3,6 +3,7 @@ package iocex
 import (
 	"fmt"
 	"reflect"
+	"strings"
 	"sync"
 )
 
@@ -79,7 +80,7 @@ func Inject(structInst interface{}, funcs ...func(reflect.StructField) interface
 				var fieldRv reflect.Value
 				mapIter := vv.MapRange()
 				for mapIter.Next() {
-					if mapIter.Key().String() == name {
+					if strings.EqualFold(mapIter.Key().String(), name) {
 						fieldRv = mapIter.Value()
 						break
 					}
