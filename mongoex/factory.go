@@ -2,11 +2,14 @@ package mongoex
 
 import (
 	"context"
+	"fmt"
+	"os"
 
 	"github.com/xm-chentl/go-code/dbfactory"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type factory struct {
@@ -35,11 +38,17 @@ func (f factory) Uow() dbfactory.IUnitOfWork {
 }
 
 func New(dbName, uri string) dbfactory.IDbFactory {
+	ctx := context.Background()
 	client, err := mongo.Connect(
-		context.Background(),
+		ctx,
 		options.Client().ApplyURI(uri),
 	)
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to mongodb: %v\n", err)
+		// os.Exit(1)
+		panic(err)
+	}
+	if err = client.Ping(ctx, readpref.Primary()); err != nil {
 		panic(err)
 	}
 

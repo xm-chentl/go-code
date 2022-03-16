@@ -18,6 +18,7 @@ func (r repository) Create(entry dbfactory.IDbModel) (err error) {
 	_, err = r.dataBase.Collection(
 		r.getCollectionName(entry),
 	).InsertOne(context.Background(), entry)
+
 	return
 }
 
@@ -45,3 +46,5 @@ func (r repository) Query(entry dbfactory.IDbModel) dbfactory.IQuery {
 func (r repository) getCollectionName(entry dbfactory.IDbModel) string {
 	return reflect.TypeOf(entry).Name()
 }
+
+func (r repository) Close() {}

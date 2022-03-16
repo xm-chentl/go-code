@@ -5,4 +5,5 @@ type IRepository interface {
 	Delete(IDbModel) error
 	Update(IDbModel, ...interface{}) error
 	Query(IDbModel) IQuery
+	Close()
 }

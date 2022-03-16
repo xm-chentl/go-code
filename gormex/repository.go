@@ -37,3 +37,7 @@ func (r repository) Query(entry dbfactory.IDbModel) dbfactory.IQuery {
 		entry: entry,
 	}
 }
+
+func (r repository) Close() {
+	// todo:
+}
