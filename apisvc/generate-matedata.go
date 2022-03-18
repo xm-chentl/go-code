@@ -57,7 +57,7 @@ type apiInfo struct {
 	4. 生成源文件
 */
 
-func GenerateMatedata(serverName, apiDir, quota string) (err error) {
+func GenerateMatedata(apiDir, quota string) (err error) {
 	apiDirFileArray, err := os.ReadDir(apiDir)
 	if err != nil {
 		return
@@ -88,7 +88,7 @@ func GenerateMatedata(serverName, apiDir, quota string) (err error) {
 		}
 
 		apiInfoArray[index].target = strings.ReplaceAll(path.Dir(info.target), apiDir, "")
-		importQuote := fmt.Sprintf(quota, serverName, apiInfoArray[index].target)
+		importQuote := fmt.Sprintf(`"%s/api%s"`, quota, apiInfoArray[index].target)
 		_, ok := packageExistMap[info.quote]
 		if ok {
 			if _, ok = packageMap[importQuote]; !ok {
