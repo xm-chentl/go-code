@@ -23,7 +23,7 @@ func Get(inst interface{}) interface{} {
 	return nil
 }
 
-func GetTag(inst interface{}, tagName string) interface{} {
+func getTag(inst interface{}, tagName string) interface{} {
 	rt := getType(inst)
 	v, ok := container.Load(rt)
 	if !ok {
@@ -59,6 +59,13 @@ func Inject(structInst interface{}, funcs ...func(reflect.StructField) interface
 		fieldRt := field.Type
 		if fieldRt.Kind() == reflect.Ptr {
 			fieldRt = fieldRt.Elem()
+		}
+		if len(funcs) > 0 && funcs[0] != nil {
+			v := funcs[0](field)
+			if v != nil {
+				rv.Field(i).Set(reflect.ValueOf(v))
+				continue
+			}
 		}
 		if fieldRt.Kind() == reflect.Interface {
 			name, ok := field.Tag.Lookup(tagInject)
