@@ -63,7 +63,7 @@ func Test_GetKey(t *testing.T) {
 			"mongo": &mongoDbInst{},
 		},
 	)
-	v := GetTag(new(IDb), "mongo")
+	v := getTag(new(IDb), "mongo")
 	if v == nil {
 		t.Fatal("err")
 	}
